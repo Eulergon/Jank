@@ -11,10 +11,15 @@ import androidx.core.content.FileProvider;
 
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -188,4 +193,35 @@ public class ImageParser{
         public int getLocalGameID(){ return localGameID; }
     }
 
+    public GameInfo basicValuesToGameInfo(int gameID, String name, int pfp, String moveMade, int localGameID){
+        GameInfo gameInfo = new GameInfo();
+        gameInfo.setGameID(gameID);
+        gameInfo.setName(name);
+        gameInfo.setPfp(pfp);
+        gameInfo.setMoveMade(moveMade);
+        gameInfo.setLocalGameID(localGameID);
+        return gameInfo;
+    }
+
+    /*
+    public JSONObject gameInfoToJSON(GameInfo gameInfo) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("GameID", gameInfo.getGameID());
+        jsonObject.put("Name", gameInfo.getName());
+        jsonObject.put("Pfp", gameInfo.getPfp());
+        jsonObject.put("MoveMade", gameInfo.getMoveMade());
+        jsonObject.put("LocalGameID", gameInfo.getLocalGameID());
+        return jsonObject;
+    }
+    public void saveMostRecentGame(Context context) throws IOException, JSONException {
+        // Convert JsonObject to String Format
+        JSONObject jsonObject = gameInfoToJSON(decodePNG());
+        String userString = jsonObject.toString();
+// Define the File Path and its Name
+        File file = new File(context.getFilesDir(), "incoming.json");
+        FileWriter fileWriter = new FileWriter(file);
+        BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+        bufferedWriter.write(userString);
+        bufferedWriter.close();
+    }*/
 }

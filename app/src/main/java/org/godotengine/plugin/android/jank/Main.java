@@ -54,7 +54,8 @@ public class Main extends GodotPlugin{
     }
 
     @UsedByGodot
-    public void ShareImage(ImageParser.GameInfo gameInfo){
+    public void ShareImage(int gameID, String name, int pfp, String moveMade, int localGameID){
+        ImageParser.GameInfo gameInfo = imageParser.basicValuesToGameInfo(gameID, name, pfp, moveMade, localGameID);
         Bitmap bitmap = imageParser.encodePNG(gameInfo);
         try {
             File cachePath = new File(context.getCacheDir(), "images");
@@ -68,7 +69,7 @@ public class Main extends GodotPlugin{
         }
         File imagePath = new File(context.getCacheDir(), "images");
         File newFile = new File(imagePath, "image.png");
-        Uri contentUri = FileProvider.getUriForFile(context, "com.example.myapp.fileprovider", newFile);
+        Uri contentUri = FileProvider.getUriForFile(context, "org.godotengine.plugin.android.jank.fileprovider", newFile);
 
         if (contentUri != null) {
             Intent shareIntent = new Intent();
