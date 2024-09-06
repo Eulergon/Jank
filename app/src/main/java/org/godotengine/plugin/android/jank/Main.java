@@ -1,4 +1,5 @@
 package org.godotengine.plugin.android.jank;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,7 +28,8 @@ public class Main extends GodotPlugin{
     public Main(Godot godot) {
         super(godot);
     }
-
+    private Intent notificationIntent;
+    private Activity context = getGodot().getActivity();
     private ImageParser imageParser = new ImageParser();
 
     @NonNull
@@ -37,12 +39,22 @@ public class Main extends GodotPlugin{
     }
 
     @UsedByGodot
-    public String hello(){
-        return null;
+    public void initializeIntent(){
+        notificationIntent = new Intent(context, NotificationListener.class);
     }
 
     @UsedByGodot
-    public void ShareImage(ImageParser.GameInfo gameInfo, Context context){
+    public void turnOnListener(){
+        context.startService(notificationIntent);
+    }
+
+    @UsedByGodot
+    public void turnOffListener(){
+        context.stopService(notificationIntent);
+    }
+
+    @UsedByGodot
+    public void ShareImage(ImageParser.GameInfo gameInfo){
         Bitmap bitmap = imageParser.encodePNG(gameInfo);
         try {
             File cachePath = new File(context.getCacheDir(), "images");
@@ -67,4 +79,5 @@ public class Main extends GodotPlugin{
             context.startActivity(Intent.createChooser(shareIntent, "Choose an app"));
         }
     }
+
 }

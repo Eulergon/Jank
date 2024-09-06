@@ -39,6 +39,7 @@ public class ImageParser{
                 if(i == 8){
                     gameInfo.setGameID(pixelColor[0]);
                     gameInfo.setPfp(pixelColor[1]);
+                    gameInfo.setLocalGameID(pixelColor[2]);
                 }
                 if(i > 8 && i < 17){
                     for(int j = 0; j < 3; j++){
@@ -69,6 +70,7 @@ public class ImageParser{
         Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
         int gameID = gameInfo.getGameID();
         int pfp = gameInfo.getPfp();
+        int localGameID = gameInfo.getLocalGameID();
         char[] name = gameInfo.getName().toCharArray();
         int[][] nameAscii = new int[8][3];
         int k = 0;
@@ -78,7 +80,7 @@ public class ImageParser{
                 k++;
             }
         }
-        int[] idAndPfp = {gameID, pfp};
+        int[] idsAndPfp = {gameID, pfp, localGameID};
         char[] gameMove = gameInfo.getMoveMade().toCharArray();
         int[][] gameMoveAscii = new int[8][3];
         k = 0;
@@ -91,10 +93,13 @@ public class ImageParser{
         for(int i = 0; i < 25; i++){
             if(i >= 8){
                 if(i == 8){
-                    bitmap = setRGBatXYCoordinate(idAndPfp, bitmap, i, 0);
+                    bitmap = setRGBatXYCoordinate(idsAndPfp, bitmap, i, 0);
                 }
                 if(i > 8 && i < 17){
                     bitmap = setRGBatXYCoordinate(nameAscii[i], bitmap, i, 0);
+                }
+                if(i >= 17){
+                    bitmap = setRGBatXYCoordinate(gameMoveAscii[i], bitmap, i, 0);
                 }
             } else{
                 bitmap = setRGBatXYCoordinate(vPixelOrder[i], bitmap, i, 0);
@@ -153,6 +158,7 @@ public class ImageParser{
         public String name;
         public int pfp;
         public String moveMade;
+        public int localGameID;
 
         public void setGameID(int id){
             gameID = id;
@@ -166,6 +172,7 @@ public class ImageParser{
         public void setMoveMade(String move){
             moveMade = move;
         }
+        public void setLocalGameID(int id){ localGameID = id; }
         public int getGameID(){
             return gameID;
         }
@@ -178,6 +185,7 @@ public class ImageParser{
         public String getMoveMade(){
             return moveMade;
         }
+        public int getLocalGameID(){ return localGameID; }
     }
 
 }

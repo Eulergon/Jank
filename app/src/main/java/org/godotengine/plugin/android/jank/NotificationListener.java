@@ -4,9 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.Image;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+
+import java.util.stream.Stream;
 
 
 public class NotificationListener extends NotificationListenerService {
@@ -29,9 +32,14 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         if(sbn.getPackageName() == "com.whatsapp" && sbn.getNotification().hasImage()){
-            imageParser.decodePNG();
+            ImageParser.GameInfo gameInfo = imageParser.decodePNG();
+            if(Stream.of(gameInfo.getName(), gameInfo.getGameID(), gameInfo.getLocalGameID(), gameInfo.getPfp(), gameInfo.getMoveMade()).allMatch(x -> x != null)){
+                //Send notification to player
+            }
         }
     }
 
-
+    public void stopSelfService(){
+        stopSelf();
+    }
 }
