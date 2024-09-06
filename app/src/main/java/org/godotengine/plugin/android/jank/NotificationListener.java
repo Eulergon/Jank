@@ -11,7 +11,9 @@ import android.util.Log;
 
 public class NotificationListener extends NotificationListenerService {
 
+    //Not fully programmed yet
     private String TAG = this.getClass().getSimpleName();
+    ImageParser imageParser = new ImageParser();
     @Override
     public void onCreate() {
         super.onCreate();
@@ -27,7 +29,7 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         if(sbn.getPackageName() == "com.whatsapp" && sbn.getNotification().hasImage()){
-
+            imageParser.decodePNG();
         }
     }
 

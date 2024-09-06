@@ -1,12 +1,21 @@
 package org.godotengine.plugin.android.jank;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+
+import androidx.core.content.FileProvider;
+
 import org.apache.commons.io.comparator.LastModifiedFileComparator;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
@@ -36,7 +45,7 @@ public class ImageParser{
                         nameString += (char)pixelColor[j];
                     }
                 }
-                if(i > 17){
+                if(i >= 17){
                     for(int j = 0; j < 3; j++){
                         moveMade += (char)pixelColor[j];
                     }
@@ -54,31 +63,47 @@ public class ImageParser{
     }
 
 
-    /* Unfinished function
-    public void encodePNG(GameInfo gameInfo){
+
+    public Bitmap encodePNG(GameInfo gameInfo){
         File image = new File("images/invite.png");
         Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
         int gameID = gameInfo.getGameID();
         int pfp = gameInfo.getPfp();
         char[] name = gameInfo.getName().toCharArray();
+        int[][] nameAscii = new int[8][3];
+        int k = 0;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 3; j++){
+                Array.set(nameAscii[i], j, (int)name[k]);
+                k++;
+            }
+        }
         int[] idAndPfp = {gameID, pfp};
+        char[] gameMove = gameInfo.getMoveMade().toCharArray();
+        int[][] gameMoveAscii = new int[8][3];
+        k = 0;
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 3; j++){
+                Array.set(gameMoveAscii[i], j, (int)gameMove[k]);
+                k++;
+            }
+        }
         for(int i = 0; i < 25; i++){
             if(i >= 8){
                 if(i == 8){
                     bitmap = setRGBatXYCoordinate(idAndPfp, bitmap, i, 0);
                 }
                 if(i > 8 && i < 17){
-                    for(int j = 0; j < 3; j++){
-
-                    }
+                    bitmap = setRGBatXYCoordinate(nameAscii[i], bitmap, i, 0);
                 }
             } else{
                 bitmap = setRGBatXYCoordinate(vPixelOrder[i], bitmap, i, 0);
             }
         }
+        return bitmap;
     }
 
-    */
+
     private Bitmap setRGBatXYCoordinate(int[] rgb, Bitmap bitmap, int x, int y){
         Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
         int color = Color.argb(0xFF, rgb[0], rgb[1], rgb[2]);
@@ -86,7 +111,7 @@ public class ImageParser{
         return mutableBitmap;
     }
     private int[] getRGBatXYCoordinate(File image, int x, int y){
-        int[] returnRGB = new int[2];
+        int[] returnRGB = new int[3];
         try{
             Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath());
             if(bitmap != null){
