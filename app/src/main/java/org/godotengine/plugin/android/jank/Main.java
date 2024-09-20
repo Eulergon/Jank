@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
+import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -31,6 +32,8 @@ public class Main extends GodotPlugin{
     private Intent notificationIntent;
     private Activity context = getGodot().getActivity();
     private ImageParser imageParser = new ImageParser();
+    private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
+    private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";
 
     @NonNull
     @Override
@@ -80,5 +83,4 @@ public class Main extends GodotPlugin{
             context.startActivity(Intent.createChooser(shareIntent, "Choose an app"));
         }
     }
-
 }
