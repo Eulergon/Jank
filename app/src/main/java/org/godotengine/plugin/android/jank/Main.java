@@ -30,7 +30,7 @@ public class Main extends GodotPlugin{
         super(godot);
     }
     private Intent notificationIntent;
-    private Activity context = getGodot().getActivity();
+    public Activity context = getGodot().getActivity();
     private ImageParser imageParser = new ImageParser();
     private static final String ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners";
     private static final String ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS";

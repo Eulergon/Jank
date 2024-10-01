@@ -33,5 +33,5 @@ dependencies {
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation("org.godotengine:godot:4.2.1.stable")
-    implementation 'commons-io:commons-io:2.6'
+    implementation 'commons-io:commons-io:2.17.0'
 }
